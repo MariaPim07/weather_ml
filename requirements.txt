@@ -1,0 +1,15 @@
+pandas
+numpy
+scikit-learn
+joblib
+streamlit
+matplotlib
+seaborn
+sqlalchemy
+psycopg2
+apache-airflow
+apache-airflow-providers-postgres
+selenium
+webdriver-manager
+datetime
+python-dotenv
