@@ -4,19 +4,21 @@ import os
 from sqlalchemy import create_engine
 from dotenv import main
 
-main.load_dotenv()
-engine = create_engine(f'{str(os.environ.get("DB_CONN"))}/weather')
-
-dir_path = os.path.dirname(__file__)
+def __get_connection():
+    main.load_dotenv()
+    return create_engine(f'{str(os.environ.get("DB_CONN"))}/weather')
 
 def __get_data():
     try:
+        engine = __get_connection()
         return pd.read_sql_query('select * from processed_data', con=engine)
     except Exception as err:
         print(err)
 
 def __get_model():
-    return joblib.load(f"{dir_path}/RandomForestRegressor_model.pkl")
+    dir_path = os.path.dirname(__file__)
+    model_path = os.path.join(dir_path, 'RandomForestRegressor_model.pkl')
+    return joblib.load(model_path)
 
 def predict_temperature(years = []):
     model = __get_model()
@@ -39,6 +41,3 @@ def predict_temperature(years = []):
     future_data_df['predicted_temperature'] = predict
 
     return future_data_df
-
-if __name__ == "__main__":
-    predict_temperature([2026])
